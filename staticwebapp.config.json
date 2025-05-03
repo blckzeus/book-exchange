@@ -1,10 +1,15 @@
 {
-    "appArtifactLocation": ".",
-    "routes": [
-      {
-        "route": "/*",
-        "serve": "/index.html",
-        "statusCode": 200
-      }
-    ]
+    "routes": [],
+    "navigationFallback": {
+      "rewrite": "/index.html",
+      "statusCode": 200
+    },
+    "platform": {
+      "apiRuntime": "node18"
+    },
+    "build": {
+      "appLocation": "/",        
+      "apiLocation": "api",      
+      "outputLocation": "build"  
+    }
   }
