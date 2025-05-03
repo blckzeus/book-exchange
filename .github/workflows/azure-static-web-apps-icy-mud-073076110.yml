@@ -21,27 +21,15 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: true
-          persist-credentials: false # Prevent persisting credentials
+          persist-credentials: false
           lfs: false
 
-      # Fix permissions for .git/config
       - name: Fix Git Config Permissions
         run: chmod -R u+w .git/config
 
-      - name: Install OIDC Client from Core Package
-        run: npm install @actions/core@1.6.0 @actions/http-client
+      # Skip unnecessary NPM installation and OIDC steps if not required for static site
 
-      - name: Get Id Token
-        uses: actions/github-script@v6
-        id: idtoken
-        with:
-          script: |
-              const coredemo = require('@actions/core')
-              return await coredemo.getIDToken()
-          result-encoding: string
-
-      - name: Build And Deploy
-        id: builddeploy
+      - name: Deploy Static Site
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ICY_MUD_073076110 }}
@@ -49,4 +37,3 @@ jobs:
           app_location: "/" # App source code path
           api_location: "" # Api source code path - optional
           output_location: "" # Built app content directory - optional
-          github_id_token: ${{ steps.idtoken.outputs.result }}
